@@ -20,7 +20,7 @@ class TaskManager: ObservableObject
     {
         loadTasks()
     }
-    
+    //albert
     func addTask(title: String) {
         let task = Task(title: title)
         tasks.append(task)
