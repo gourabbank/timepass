@@ -1,24 +1,50 @@
-//
-//  ContentView.swift
-//  timepass
-//
-//  Created by Gourab Bank on 13/5/24.
-//
-
 import SwiftUI
 
 struct ContentView: View {
+    @ObservedObject private var taskManager = TaskManager()
+    @State private var newTaskTitle = ""
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationView {
+            VStack {
+                HStack {
+                    TextField("New Task", text: $newTaskTitle)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .padding()
+                    Button(action: {
+                        guard !newTaskTitle.isEmpty else { return }
+                        taskManager.addTask(title: newTaskTitle)
+                        newTaskTitle = ""
+                    }) {
+                        Image(systemName: "plus")
+                            .padding()
+                    }
+
+                }
+
+                List {
+                    ForEach(taskManager.tasks) { task in
+                        HStack {
+                            Text(task.title)
+                            Spacer()
+                            Button(action: {
+                                taskManager.toggleTaskCompletion(task: task)
+                            }) {
+                                Image(systemName: task.isCompleted ? "checkmark.circle.fill" : "circle")
+                                    .foregroundColor(task.isCompleted ? .green : .gray)
+                            }
+                        }
+                    }
+                    .onDelete(perform: taskManager.deleteTask)
+                }
+            }
+            .navigationTitle("To-Do List")
         }
-        .padding()
     }
 }
 
-#Preview {
-    ContentView()
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
 }

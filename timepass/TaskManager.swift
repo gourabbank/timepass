@@ -21,9 +21,8 @@ class TaskManager: ObservableObject
         loadTasks()
     }
     
-    func addTasks(title:String)
-    {
-        let task = Task(title:title)
+    func addTask(title: String) {
+        let task = Task(title: title)
         tasks.append(task)
     }
     
@@ -35,8 +34,7 @@ class TaskManager: ObservableObject
         }
     }
     
-    func deleteTasks(at offsets:IndexSet)
-    {
+    func deleteTask(at offsets: IndexSet) {
         tasks.remove(atOffsets: offsets)
     }
     
